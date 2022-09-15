@@ -1,0 +1,30 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+ENV['VAGRANT_NO_PARALLEL'] = 'yes'
+
+$COMMANDS = <<-'BLOCK'
+sudo apt-get update
+sudo apt-get install vim git lxc ansible -y
+BLOCK
+        
+
+Vagrant.configure(2) do |config|
+
+  NodeCount = 1
+
+  (1..NodeCount).each do |i|
+    config.vm.define "my-tower-server#{i}" do |node|
+      node.vm.box = "bento/ubuntu-20.04"
+      node.vm.hostname = "tower#{i}.example.com"
+	  node.vm.provision "shell", inline: $COMMANDS
+      node.vm.network "private_network", ip: "10.10.100.11#{i}"
+      node.vm.provider "virtualbox" do |v|
+        v.name = "my-tower-server#{i}"
+        v.memory = 6144
+        v.cpus = 2
+      end
+    end
+  end
+
+end
