@@ -143,7 +143,7 @@ done
 function run_script() {
 server=$1
 log_info "${GREEN} Adding ansible user to $server.. ${CLEAR}"
-sudo lxc exec $server -- bash /tmp/config.sh 
+sudo lxc exec $server -- bash /tmp/config.sh  </dev/null
 echo " OK!"
 }
 
@@ -157,11 +157,11 @@ echo " OK!"
 for count in {1..2}
 do
 log_info "${GREEN} Copying script in client-$count server.. ${CLEAR}"
-sudo lxc exec client-$count "useradd vagrant"
-[ $? -eq 0 ] && sudo lxc file push /tmp/config.sh client-$count/tmp/ && run_script client-$count
+sudo lxc exec client-$count "useradd vagrant" </dev/null
+[ $? -eq 0 ] && sudo lxc file push /tmp/config.sh client-$count/tmp/ </dev/null && run_script client-$count
 echo " OK!"
 done
 }
 
 spin_server
-#copy_script
+copy_script
