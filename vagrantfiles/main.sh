@@ -146,7 +146,7 @@ sleep 15
 image=$(select_random "${image_list[@]}")
 log_info "${GREEN} Starting Server ansible-client-$count with Image ${image} - Please Wait.. ${CLEAR}"
 sudo lxc launch "${image}" ansible-client-$count </dev/null
-sudo lxc start $CONTAINER </dev/null
+sudo lxc start ansible-client-$count </dev/null
 echo " OK!"
 done
 }
