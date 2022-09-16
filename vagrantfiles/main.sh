@@ -140,12 +140,13 @@ done
 log_info "*** ${GREEN} PLEASE WAIT SPINING UP ALL THE SERVERS MAY TAKE A WHILE *** ${CLEAR}"
 echo -e "\n"
 sleep 60
-for count in {1..5}
+for count in {1..4}
 do
-sleep 10
+sleep 15
 image=$(select_random "${image_list[@]}")
 log_info "${GREEN} Starting Server ansible-client-$count with Image ${image} - Please Wait.. ${CLEAR}"
 sudo lxc launch "${image}" ansible-client-$count </dev/null
+sudo lxc start $CONTAINER </dev/null
 echo " OK!"
 done
 }
@@ -158,19 +159,20 @@ echo " OK!"
 }
 
 function wait_for_server() {
+sleep 10
 CONTAINER=$1
+sudo lxc start $CONTAINER </dev/null
 while  [ $(sudo lxc ls -c ns --format csv $CONTAINER|grep RUNNING|cut -f1 -d,|wc -l) -lt 1 ] ;do
-IP_ADDR=$(lxc ls -c ns4 --format csv $CONTAINER|cut -d, -f3|cut -d' ' -f1)
-CONTAINER_NAME=$(lxc ls -c ns4 --format csv $CONTAINER|cut -d, -f3|cut -d' ' -f1)
-sudo echo -e "$IP_ADDR" >> $HOST_FILE
 log_warn "${YELLOW} Waiting for ${CONTAINER} to Come up - Please Wait.. ${CLEAR}"
 sleep 1
 done
+IP_ADDR=$(sudo lxc ls -c ns4 --format csv $CONTAINER|cut -d, -f3|cut -d' ' -f1)
+sudo echo -e "$IP_ADDR" >> $HOST_FILE
 echo " OK!"
 }
 
 function copy_script() {
-for count in {1..5}
+for count in {1..4}
 do
 wait_for_server ansible-client-$count
 sleep 10
@@ -192,5 +194,6 @@ ansible_ssh_pass=password
 EOF
 
 sudo chown -R vagrant:vagrant /home/vagrant/*
-log_info "${GREEN} *** RUNNING SAMPLE PLAYBOOK TO GET UPTIME FROM ALL THE SERVERS *** ${CLEAR}"
-[ $? -eq 0 ] && ansible-playbook $PLAY_BOOK
+[ $? -eq 0 ] && \
+log_info "${GREEN} *** RUNNING SAMPLE PLAYBOOK TO GET UPTIME FROM ALL THE SERVERS *** ${CLEAR}" && \
+ansible-playbook $PLAY_BOOK
