@@ -5,7 +5,7 @@ ENV['VAGRANT_NO_PARALLEL'] = 'yes'
 
 $COMMANDS = <<-'BLOCK'
 apt-get update
-apt-get install vim git snap ansible dos2unix -y
+apt-get install vim git snap sshpass ansible dos2unix -y
 chmod a+x /tmp/*.sh
 find /tmp -type f |xargs dos2unix
 BLOCK
