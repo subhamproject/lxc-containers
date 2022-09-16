@@ -137,7 +137,7 @@ while [ $(lxc list|wc -l) -lt 1 ];do
 log_info "${GREEN} Waiting for LXC service to Start and Settled.. ${CLEAR}"
 sleep 1
 done
-log_info "*** ${GREEN} PLEASE WAIT SPINING UP ALL THE SERVERS MAY TAKE A WHILE *** ${CLEAR}"
+log_info "*** ${GREEN} PLEASE WAIT SPINNING UP ALL THE SERVERS MAY TAKE A WHILE *** ${CLEAR}"
 echo -e "\n"
 sleep 60
 for count in {1..4}
