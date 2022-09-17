@@ -1,4 +1,5 @@
 #!/bin/bash
+#https://blog.simos.info/how-to-use-the-lxd-proxy-device-to-map-ports-between-the-host-and-the-containers/
 
 Do below in host machine
 
@@ -27,8 +28,8 @@ Create profile and add to lxc containers
 
 #!/bin/bash
 
-lxc profile create proxy-22
+lxc profile create proxy
 
-lxc profile device add proxy-22 hostport2000 proxy connect="tcp:127.0.0.1:22" listen="tcp:0.0.0.0:2000"
+lxc profile device add proxy hostport2000 proxy connect="tcp:127.0.0.1:22" listen="tcp:0.0.0.0:3000"
 
-for I in $(lxc list -c ns --format csv|cut -d, -f1); do lxc profile add $I proxy-22; done
+ lxc profile add server-1 proxy
