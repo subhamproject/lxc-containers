@@ -1,0 +1,7 @@
+https://discuss.linuxcontainers.org/t/no-internet-access-inside-container-but-container-is-able-to-ping-to-host/13168
+
+Yep, it is. Docker made your default FORWARD policy to be DROP which will eat all traffic that’s not meant for Docker itself…
+
+sudo iptables -P FORWARD ACCEPT 
+
+ should temporarily fix that
